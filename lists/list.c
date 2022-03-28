@@ -37,6 +37,14 @@ int database_insert(ListBase *db, char *data, int index)
         db->amount++;
         return 0;
     }
+    // zero index
+    if (index <= 0)
+    {
+        temp_item->next = db->head;
+        db->head = temp_item;
+        db->amount++;
+        return 0;
+    }
     // if index is greater then we insert it at the end of the list
     if (index >= db->amount) {
         ListItem *temp_tail = db->tail;
@@ -111,6 +119,7 @@ int database_delete(ListBase *db, int index)
     if (index == 0) {
         db->head = db->head->next;
         free(temp);
+        db->amount--;
         return 0;
     }
     // end of the list
@@ -118,6 +127,7 @@ int database_delete(ListBase *db, int index)
         ListItem *tail = db->tail;
         db->tail = db->tail->prev;
         free(tail);
+        db->amount--;
         return 0;
     }
     // otherwise
@@ -131,6 +141,7 @@ int database_delete(ListBase *db, int index)
         temp = temp->next;
         i++;
     }
+    db->amount--;
     return 1;
     
 };
